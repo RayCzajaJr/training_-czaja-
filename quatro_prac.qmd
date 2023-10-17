@@ -1,0 +1,68 @@
+---
+title: "quarto_practice"
+author: "Ray Czaja"
+format: html
+editor: visual
+---
+
+# 1. Introduction
+
+## a. About The Data
+
+This data was supplied via the Arctic Data Center and include a variety of biogeochemical variables. Downloaded on 10-17-2023 via <https://arcticdata.io/catalog/view/doi:10.18739/A25T3FZ8X>
+
+## b. Setup
+
+```{r}
+library(readr)
+```
+
+## c. Read in data
+
+```{r}
+bg_chem <- read_csv("data/BGchem2008data.csv")
+```
+
+# 2. Analysis
+
+## a. Summary Statistics Calculations
+
+```{r}
+#| eval: false
+#| echo: false
+## Prints the column names of my data frame
+colnames(bg_chem)
+
+## General structure of the data frame - shows class of each column
+str(bg_chem)
+
+## First 6 lines of the data frame
+head(bg_chem)
+
+## Summary of each column of data
+summary(bg_chem)
+
+## Prints unique values in a column (in this case Date)
+unique(bg_chem$Date)
+```
+
+```{r}
+nitrate <- mean(bg_chem$NO3)
+nitrite <- mean(bg_chem$NO2)
+amm <- mean(bg_chem$NH4)
+phos <- mean(bg_chem$P)
+```
+
+## b. Redfield Ratio Calculations
+
+```{r}
+ratio <- (nitrate + nitrite + amm)/phos
+```
+
+## c. Redfield Ration Plot
+
+```{r}
+plot(bg_chem$P, bg_chem$NO2 + bg_chem$NO3 + bg_chem$NH4)
+```
+
+# 3. Conclusion
