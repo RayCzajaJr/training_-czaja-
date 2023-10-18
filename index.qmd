@@ -7,13 +7,26 @@ editor: visual
 
 ## \## Course Lessons
 
-- Introduction to Literate Analysis Using Quarto 
-- Cleaning and Wrangling data
-- Data Visualization
-- Functions and packages
+-   Introduction to Literate Analysis Using Quarto
+-   Cleaning and Wrangling data
+-   Data Visualization
+-   Functions and packages
 
 ## Course Practice Session
 
-- Joins, Cleaning and Wrangling Data
-- Data Viz and Publish to the web
-- Writing functions and making packages
+-   Joins, Cleaning and Wrangling Data
+-   Data Viz and Publish to the web
+-   Writing functions and making packages
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats) # makes working with factors easier
+library(ggplot2)
+library(leaflet) # interactive maps
+library(DT) # interactive tables
+library(scales) # scale functions for visualization
+library(janitor) # expedite cleaning and exploring data
+library(viridis) # colorblind friendly color pallettttttt
+```
