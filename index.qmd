@@ -9,7 +9,7 @@ editor: visual
 
 -   Introduction to Literate Analysis Using Quarto
 -   Cleaning and Wrangling data
--   Data Visualization Using ggplot
+-   Data Visualization Using ggplot2
 -   Functions and packages
 
 ## Course Practice Session
