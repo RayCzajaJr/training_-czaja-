@@ -5,23 +5,95 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+library(readr)
+library(dplyr)
+library(lubridate)
 ```
 
-You can add options to executable code like this
-
 ```{r}
-#| echo: false
-2 * 2
+# read in data using download links
+bird_observations <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=53edaa7a0e083013d9bf20322db1780e")
+surveys <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=b2466fa5cb5ed7ee1ea91398fc291c59")
+sites <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=81bf72420e69077097fb0790dcdc63a6")
+taxalist <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=58f863b7e3066e68536a9cacdc7bd58e")
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+birds_subset <- bird_observations %>% 
+  filter(species_id %in% c("BHCO", "RWBL")) %>% 
+  filter(site_id %in% c("LI-W", "NU-C"))
+```
+
+```{r}
+# syntax using pipe
+birds_left <- birds_subset %>% 
+  left_join(y = sites, by = "site_id")
+# don't see x = birds_subset here because piping in birds_subset means it automatically assumes birds_subset as x.
+
+# syntax without pipe
+birds_left <- left_join(x = birds_subset, y = sites, by = "site_id")
+
+# syntax using pipe
+birds_full <- birds_subset %>% 
+  full_join(y = sites, by = "site_id")
+
+# syntax without pipe
+birds_full <- full_join(x = birds_subset, y = sites, by = "site_id")
+
+```
+
+```{r}
+# syntax using pipe
+birds_inner <- birds_subset %>% 
+  inner_join(y = taxalist, by = "species_id")
+
+# syntax without pipe
+birds_inner <- inner_join(x = birds_subset, y = taxalist, by = "species_id" )
+```
+
+```{r}
+# syntax using pipe
+birds_inner_left <- birds_subset %>% 
+  left_join(y = taxalist, by = "species_id")
+
+# syntax without pipe
+birds_inner_left <- left_join(x = birds_subset, y = taxalist, by = "species_id")
+```
+
+```{r}
+bird_observations <- bird_observations %>% 
+  rename(bird_obs_notes = notes)
+```
+
+```{r}
+bird_obs_subset <- bird_observations %>% 
+  full_join(y = taxalist, by = "species_id") %>% 
+  full_join(y = sites, by = "site_id") %>% 
+  full_join(y = surveys, by = c("site_id", "survey_id")) %>%  
+  select(survey_date, common_name, park_name, bird_count, observer)
+```
+
+```{r}
+unique(bird_obs_subset$observer)
+```
+
+```{r}
+bird_obs_subset <- bird_obs_subset %>% 
+  mutate(observer = if_else(condition = observer == "Josh Burns", 
+                            true = "J. Burns", 
+                            false = observer))
+
+unique(bird_obs_subset$observer)
+```
+
+```{r}
+bird_obs_subset <- bird_obs_subset %>% 
+  mutate(survey_month = lubridate::month(survey_date)) %>% 
+  mutate(survey_month = as.factor(survey_month)) %>% 
+  dplyr::relocate(survey_month, .after = survey_date) %>% 
+  filter(park_name %in% c("Lindo", "Orme", "Palomino", "Sonrisa")) %>% 
+  group_by(park_name, survey_month) %>% 
+  summarize(tot_bird_count_month = n())
+```
