@@ -16,7 +16,7 @@ editor: visual
 
 -   Joins, Cleaning and Wrangling Data
 -   Data Viz and Publish to the web
--   Writing functions and making packages
+-   Writing functions and making packagesss
 
 ```{r}
 library(readr)
