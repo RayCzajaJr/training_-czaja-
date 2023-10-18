@@ -15,7 +15,7 @@ library(leaflet) # interactive maps
 library(DT) # interactive tables
 library(scales) # scale functions for visualization
 library(janitor) # expedite cleaning and exploring data
-library(viridis) # colorblind friendly color pallett
+library(viridis) # colorblind friendly color pallettt
 ```
 
 ```{r}
