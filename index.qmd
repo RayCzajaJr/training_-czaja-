@@ -5,6 +5,15 @@ format: html
 editor: visual
 ---
 
-## HELLO WORLD!!!!
+## \## Course Lessons
 
-how you doin????
+- Introduction to Literate Analysis Using Quarto 
+- Cleaning and Wrangling data
+- Data Visualization
+- Functions and packages
+
+## Course Practice Session
+
+- Joins, Cleaning and Wrangling Data
+- Data Viz and Publish to the web
+- Writing functions and making packages
